@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>심폐소생술(CPR) 퀴즈</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        /* 라디오 버튼 선택 시 라벨 스타일 변경 */
+        input[type="radio"]:checked + label {
+            background-color: #e0f2fe; /* light-blue-100 */
+            border-color: #38bdf8; /* sky-500 */
+            font-weight: 700;
+        }
+        .correct-answer {
+            background-color: #dcfce7; /* green-100 */
+            border-left: 4px solid #22c55e; /* green-600 */
+        }
+        .incorrect-answer {
+            background-color: #fee2e2; /* red-100 */
+            border-left: 4px solid #ef4444; /* red-500 */
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div class="container mx-auto p-4 sm:p-6 md:p-8 max-w-4xl">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-bold text-sky-700">심폐소생술(CPR) 퀴즈</h1>
+            <p class="mt-2 text-slate-600"> 학습한 응급처치 내용을 확인해보세요.</p>
+
+        <div id="quiz-container" class="space-y-6">
+            </div>
+
+        <div id="quiz-navigation" class="mt-8 text-center flex justify-center items-center space-x-4">
+            <button id="check-answer-btn" class="bg-sky-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-sky-700 transition-colors duration-300">정답 확인</button>
+            <button id="next-question-btn" class="bg-blue-500 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300 hidden">다음</button>
+            <button id="show-results-btn" class="bg-green-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-green-700 transition-colors duration-300 hidden">결과 확인</button>
+            <button id="retry-btn" class="bg-gray-400 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-gray-500 transition-colors duration-300 hidden">다시 풀기</button>
+        </div>
+        
+        <div id="answer-feedback" class="mt-6 text-center text-xl font-bold"></div>
+        <div id="results-container" class="mt-8 text-center text-2xl font-bold"></div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question: "1. 축구 시합 중 심정지로 쓰러진 친구를 발견했을 때 가장 먼저 해야 할 일은 무엇인가요?",
+                options: ["인공호흡 시작", "119에 전화", "의식 및 호흡 확인", "가슴압박 시작"],
+                answer: "의식 및 호흡 확인"
+            },
+            {
+                question: "2. 쓰러진 환자의 의식과 호흡이 없는 것을 확인 한 다음 해야 할 일은?",
+                options: ["인공호흡 시작", "주변에 사람이 있다면 119에 전화을 요청", "자동심장충격기(AED)를 가져온다", "가슴압박 시작"],
+                answer: "주변에 사람이 있다면 119에 전화을 요청"
+            },
+            {
+                question: "3. 119에 신고한 후, 자동심장충격기(AED)가 가까이에 있다면 어떻게 해야 하나요?",
+                options: ["사용하지 않는다", "바로 심폐소생술(CPR)을 멈추고 자동심장충격기(AED)를 가져온다", "다른 사람에게 가져오게 하고 심폐소생술(CPR)은 계속한다", "심폐소생술(CPR)을 하지 않고 자동심장충격기(AED)만 사용한다"],
+                answer: "다른 사람에게 가져오게 하고 심폐소생술(CPR)은 계속한다"
+            },
+            {
+                question: "4. 가슴압박을 할 때 적절한 깊이는?",
+                options: ["약 1cm", "약 3cm", "약 5cm", "약 10cm"],
+                answer: "약 5cm"
+            },
+            {
+                question: "5. 가슴압박의 속도로 적절한 것은?",
+                options: ["분당 60회", "분당 100-120회", "분당 140-160회", "분당 180회 이상"],
+                answer: "분당 100-120회"
+            },
+            {
+                question: "6. 구조가 혼자 있을 때는 심폐소생술(CPR)을 하는 순서는?",
+                options: ["인공호흡 → 119 신고 → 압박", "바로 집으로 데려간다", "의식 및 호흡 확인 → 119 신고 → 가슴압박 시작", "옆 사람 부르기 → 물 마시게 하기"],
+                answer: "의식 및 호흡 확인 → 119 신고 → 가슴압박 시작"
+            },
+            {
+                question: "7. 심정지 환자의 가슴압박은 어느 부위에 해야 하나요?",
+                options: ["왼쪽 가슴", "오른쪽 가슴", "가슴뼈(흉골) 아래쪽 1/2지점", "복부 중심"],
+                answer: "가슴뼈(흉골) 아래쪽 1/2지점"
+            },
+            {
+                question: "8. 심정지 환자가 쓰러진 후 몇 분 안에 심폐소생술을 시작해야 생명을 살릴 수 있는가?",
+                options: ["4분", "6분", "10분", "20분"],
+                answer: "4분"
+            },
+            {
+                question: "9. 심폐소생술 중 멈추지 말고 계속해야 하는 이유는?",
+                options: ["환자가 갑자기 일어날 수 있으므로 ", "압박을 멈추면 뇌에 산소가 더 이상 전달되지 않기 때문에", "시간이 아까워서", "의료진이 오기 전에 끝내야 하니까"],
+                answer: "압박을 멈추면 뇌에 산소가 더 이상 전달되지 않기 때문에"
+            },
+            {
+                question: "10. 가슴 압박을 할 때, 손 모양은 어떻게 해야 할까요?",
+                options: ["한 손으로만 가볍게 누른다", "두 손을 깍지끼고 손바닥 뒤꿈치로 수직으로 누른다", "손가락으로 누른다", "주먹을 쥐고 누른다"],
+                answer: "두 손을 깍지끼고 손바닥 뒤꿈치로 수직으로 누른다"
+            },
+            {
+                question: "11. 자동심장충격기(AED) 사용 시 가장 먼저 해야 할 일은?",
+                options: ["패드를 붙이기", "전원 켜기", "충전하기", "심장에 전기 충격 가하기"],
+                answer: "전원 켜기"
+            },
+            {
+                question: "12. 자동심장충격기(AED) 패드는 어디에 붙이나요? (성인 기준)",
+                options: ["두 팔", "복부와 가슴", "오른쪽 쇄골 아래, 왼쪽 옆구리 아래", "목과 가슴"],
+                answer: "오른쪽 쇄골 아래, 왼쪽 옆구리 아래"
+            },
+            {
+                question: "13. 자동심장충격기(AED)가 '전기 충격 필요 없음'이라고 말하면 어떻게 해야 하나요?",
+                options: ["사용을 중단하고 기다린다", "가슴 압박을 다시 시작한다", "전원 끄고 AED를 제거한다", "다시 분석 버튼을 누른다"],
+                answer: "가슴 압박을 다시 시작한다"
+            },
+            {
+                question: "14. 자동심장충격기(AED) 작동 중 “분석 중” 메시지가 나오면 해야 할 행동은?",
+                options: ["계속 가슴압박을 한다", "환자에게 말을 건다", "환자 몸에 손대지 않는다", "전원 버튼을 다시 누른다"],
+                answer: "환자 몸에 손대지 않는다"
+            },
+            {
+                question: "15. 자동심장충격기(AED)의 주요 기능은 무엇인가요?",
+                options: ["호흡 보조", "체온 유지", "심장 리듬 분석 및 전기 충격 제공", "혈압 측정"],
+                answer: "심장 리듬 분석 및 전기 충격 제공"
+            }
+        ];
+
+        const quizContainer = document.getElementById('quiz-container');
+        const checkAnswerBtn = document.getElementById('check-answer-btn');
+        const nextQuestionBtn = document.getElementById('next-question-btn');
+        const showResultsBtn = document.getElementById('show-results-btn');
+        const retryBtn = document.getElementById('retry-btn');
+        const answerFeedback = document.getElementById('answer-feedback');
+        const resultsContainer = document.getElementById('results-container');
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            // 이전 문제의 피드백과 결과를 초기화
+            answerFeedback.innerHTML = '';
+            resultsContainer.innerHTML = '';
+
+            // 버튼 상태 초기화
+            checkAnswerBtn.classList.remove('hidden');
+            nextQuestionBtn.classList.add('hidden');
+            showResultsBtn.classList.add('hidden');
+            retryBtn.classList.add('hidden');
+
+            quizContainer.innerHTML = ''; // 퀴즈 컨테이너 비우기
+
+            if (currentQuestionIndex < quizData.length) {
+                const currentQuestion = quizData[currentQuestionIndex];
+                const options = currentQuestion.options.map((option, index) =>
+                    `<div class="relative">
+                        <input type="radio" name="question${currentQuestionIndex}" id="q${currentQuestionIndex}o${index}" value="${option}" class="absolute top-1/2 left-4 -translate-y-1/2 opacity-0">
+                        <label for="q${currentQuestionIndex}o${index}" class="block w-full p-4 border-2 border-slate-300 rounded-lg cursor-pointer hover:bg-slate-100 hover:border-sky-300 transition-colors duration-200">
+                            ${option}
+                        </label>
+                    </div>`
+                ).join('');
+
+                const questionElement = `
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200" id="question-card-${currentQuestionIndex}">
+                        <div class="flex-grow w-full">
+                            <p class="text-lg font-bold mb-4">${currentQuestion.question}</p>
+                            <div class="space-y-3">${options}</div>
+                        </div>
+                    </div>
+                `;
+                quizContainer.innerHTML = questionElement;
+
+                // 라디오 버튼 활성화
+                const radioButtons = quizContainer.querySelectorAll(`input[name="question${currentQuestionIndex}"]`);
+                radioButtons.forEach(radio => {
+                    radio.disabled = false;
+                    // 이전 스타일 제거
+                    radio.nextElementSibling.classList.remove('correct-answer', 'incorrect-answer');
+                    // 이전에 추가된 (정답) 텍스트 제거
+                    const existingCorrectText = radio.nextElementSibling.querySelector('.correct-text');
+                    if (existingCorrectText) {
+                        existingCorrectText.remove();
+                    }
+                });
+            } else {
+                // 모든 문제를 다 풀었을 경우 최종 결과 표시
+                showFinalResults();
+            }
+        }
+
+        function checkAnswer() {
+            const currentQuestion = quizData[currentQuestionIndex];
+            const selectedOption = document.querySelector(`input[name="question${currentQuestionIndex}"]:checked`);
+            const radioButtons = quizContainer.querySelectorAll(`input[name="question${currentQuestionIndex}"]`);
+
+            // 모든 라디오 버튼 비활성화
+            radioButtons.forEach(radio => {
+                radio.disabled = true;
+            });
+
+            if (selectedOption) {
+                const selectedLabel = selectedOption.nextElementSibling;
+                if (selectedOption.value === currentQuestion.answer) {
+                    score++;
+                    selectedLabel.classList.add('correct-answer');
+                    answerFeedback.innerHTML = '<span class="text-green-600">✅ 정답입니다!</span>';
+                } else {
+                    selectedLabel.classList.add('incorrect-answer');
+                    answerFeedback.innerHTML = `<span class="text-red-600">❌ 오답입니다.</span>`;
+                    
+                    // 정답 표시
+                    const correctInput = document.querySelector(`input[name="question${currentQuestionIndex}"][value="${currentQuestion.answer}"]`);
+                    if (correctInput) {
+                        correctInput.nextElementSibling.classList.add('correct-answer');
+                        correctInput.nextElementSibling.insertAdjacentHTML('beforeend', '<span class="text-sm font-bold text-slate-500 ml-2 correct-text">(정답)</span>');
+                    }
+                }
+            } else {
+                answerFeedback.innerHTML = '<span class="text-orange-500">선택하지 않았습니다.</span>';
+                // 선택하지 않았을 때도 정답 표시
+                const correctInput = document.querySelector(`input[name="question${currentQuestionIndex}"][value="${currentQuestion.answer}"]`);
+                if (correctInput) {
+                    correctInput.nextElementSibling.classList.add('correct-answer');
+                    correctInput.nextElementSibling.insertAdjacentHTML('beforeend', '<span class="text-sm font-bold text-slate-500 ml-2 correct-text">(정답)</span>');
+                }
+            }
+
+            // 버튼 상태 변경
+            checkAnswerBtn.classList.add('hidden');
+            if (currentQuestionIndex < quizData.length - 1) {
+                nextQuestionBtn.classList.remove('hidden');
+            } else {
+                showResultsBtn.classList.remove('hidden');
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            loadQuestion();
+        }
+
+        function showFinalResults() {
+            quizContainer.innerHTML = ''; // 퀴즈 컨테이너 비우기
+            answerFeedback.innerHTML = ''; // 피드백 메시지 비우기
+
+            const totalQuestions = quizData.length;
+            const incorrectAnswers = totalQuestions - score;
+            const scorePercentage = Math.round((score / totalQuestions) * 100);
+
+            let resultMessage = `<span class="text-sky-700">총 ${totalQuestions} 문제 중:</span><br>`;
+            resultMessage += `<span class="text-green-600">✅ 정답: ${score}개</span><br>`;
+            resultMessage += `<span class="text-red-600">❌ 오답: ${incorrectAnswers}개</span><br>`;
+            resultMessage += `<span class="text-slate-700">점수: ${scorePercentage}%</span>`;
+            
+            resultsContainer.innerHTML = resultMessage;
+
+            // 최종 결과 화면에서는 버튼 숨기고 '다시 풀기' 버튼만 보이도록
+            checkAnswerBtn.classList.add('hidden');
+            nextQuestionBtn.classList.add('hidden');
+            showResultsBtn.classList.add('hidden');
+            retryBtn.classList.remove('hidden');
+        }
+
+        function retryQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            loadQuestion();
+        }
+        
+        checkAnswerBtn.addEventListener('click', checkAnswer);
+        nextQuestionBtn.addEventListener('click', nextQuestion);
+        showResultsBtn.addEventListener('click', showFinalResults);
+        retryBtn.addEventListener('click', retryQuiz);
+
+        // 페이지 로드 시 첫 번째 퀴즈 생성
+        loadQuestion();
+    </script>
+</body>
+</html>
