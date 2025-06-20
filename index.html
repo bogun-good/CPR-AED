@@ -31,10 +31,11 @@
     <div class="container mx-auto p-4 sm:p-6 md:p-8 max-w-4xl">
         <header class="text-center mb-8">
             <h1 class="text-3xl sm:text-4xl font-bold text-sky-700">심폐소생술(CPR) 퀴즈</h1>
-            <p class="mt-2 text-slate-600"> 학습한 내용을 확인해보세요.</p>
+            <p class="mt-2 text-slate-600"> 학습한 응급처치 내용을 확인해보세요.</p>
+            <div id="heart-container" class="mt-4 text-3xl"></div> </header>
 
         <div id="quiz-container" class="space-y-6">
-            </div>
+        </div>
 
         <div id="quiz-navigation" class="mt-8 text-center flex justify-center items-center space-x-4">
             <button id="check-answer-btn" class="bg-sky-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-sky-700 transition-colors duration-300">정답 확인</button>
@@ -50,49 +51,49 @@
     <script>
         const quizData = [
             {
-                question: "1. 심정지로 쓰러진 친구를 발견했을 때 가장 먼저 해야 할 일은 무엇인가요?",
-                options: ["인공호흡 시작", "119에 전화", "의식 및 호흡 확인", "가슴압박 시작"],
-                answer: "의식 및 호흡 확인"
-            },
-            {
-                question: "2. 쓰러진 환자의 의식과 호흡이 없는 것을 확인 한 다음 해야 할 일은?",
-                options: ["인공호흡 시작", "주변에 사람이 있다면 119에 전화을 요청", "자동심장충격기(AED)를 가져온다", "가슴압박 시작"],
-                answer: "주변에 사람이 있다면 119에 전화을 요청"
-            },
-            {
-                question: "3. 119에 신고한 후, 자동심장충격기(AED)가 가까이에 있다면 어떻게 해야 하나요?",
-                options: ["사용하지 않는다", "바로 심폐소생술(CPR)을 멈추고 자동심장충격기(AED)를 가져온다", "다른 사람에게 가져오게 하고 심폐소생술(CPR)은 계속한다", "심폐소생술(CPR)을 하지 않고 자동심장충격기(AED)만 사용한다"],
-                answer: "다른 사람에게 가져오게 하고 심폐소생술(CPR)은 계속한다"
-            },
-            {
-                question: "4. 가슴압박을 할 때 적절한 깊이는?",
+                question: "1. 가슴압박을 할 때 적절한 깊이는?",
                 options: ["약 1cm", "약 3cm", "약 5cm", "약 10cm"],
                 answer: "약 5cm"
             },
             {
-                question: "5. 가슴압박의 속도로 적절한 것은?",
-                options: ["분당 60회", "분당 100-120회", "분당 140-160회", "분당 180회 이상"],
-                answer: "분당 100-120회"
+                question: "2. 심정지로 쓰러진 친구를 발견했을 때 가장 먼저 해야 할 일은 무엇인가요?",
+                options: ["인공호흡 시작", "119에 전화", "의식 및 호흡 확인", "가슴압박 시작"],
+                answer: "의식 및 호흡 확인"
             },
             {
-                question: "6. 구조가 혼자 있을 때는 심폐소생술(CPR)을 하는 순서는?",
-                options: ["인공호흡 → 119 신고 → 압박", "바로 집으로 데려간다", "의식 및 호흡 확인 → 119 신고 → 가슴압박 시작", "옆 사람 부르기 → 물 마시게 하기"],
-                answer: "의식 및 호흡 확인 → 119 신고 → 가슴압박 시작"
-            },
-            {
-                question: "7. 심정지 환자의 가슴압박은 어느 부위에 해야 하나요?",
-                options: ["왼쪽 가슴", "오른쪽 가슴", "가슴뼈(흉골) 아래쪽 1/2지점", "복부 중심"],
-                answer: "가슴뼈(흉골) 아래쪽 1/2지점"
-            },
-            {
-                question: "8. 심정지 환자가 쓰러진 후 몇 분 안에 심폐소생술을 시작해야 생명을 살릴 수 있는가?",
+                question: "3. 심정지 환자가 쓰러진 후 몇 분 안에 심폐소생술을 시작해야 생명을 살릴 수 있는가?",
                 options: ["4분", "6분", "10분", "20분"],
                 answer: "4분"
             },
             {
-                question: "9. 심폐소생술 중 멈추지 말고 계속해야 하는 이유는?",
+                question: "4. 가슴압박의 속도로 적절한 것은?",
+                options: ["분당 60회", "분당 100-120회", "분당 140-160회", "분당 180회 이상"],
+                answer: "분당 100-120회"
+            },
+            {
+                question: "5. 심정지 환자의 가슴압박은 어느 부위에 해야 하나요?",
+                options: ["왼쪽 가슴", "오른쪽 가슴", "가슴뼈(흉골) 아래쪽 1/2지점", "복부 중심"],
+                answer: "가슴뼈(흉골) 아래쪽 1/2지점"
+            },
+            {
+                question: "6. 쓰러진 환자의 의식과 호흡이 없는 것을 확인 한 다음 해야 할 일은?",
+                options: ["인공호흡 시작", "주변에 사람이 있다면 119에 전화을 요청", "자동심장충격기(AED)를 가져온다", "가슴압박 시작"],
+                answer: "주변에 사람이 있다면 119에 전화을 요청"
+            },
+            {
+                question: "7. 심폐소생술 중 멈추지 말고 계속해야 하는 이유는?",
                 options: ["환자가 갑자기 일어날 수 있으므로 ", "압박을 멈추면 뇌에 산소가 더 이상 전달되지 않기 때문에", "시간이 아까워서", "의료진이 오기 전에 끝내야 하니까"],
                 answer: "압박을 멈추면 뇌에 산소가 더 이상 전달되지 않기 때문에"
+            },
+            {
+                question: "8. 119에 신고한 후, 자동심장충격기(AED)가 가까이에 있다면 어떻게 해야 하나요?",
+                options: ["사용하지 않는다", "바로 심폐소생술(CPR)을 멈추고 자동심장충격기(AED)를 가져온다", "다른 사람에게 가져오게 하고 심폐소생술(CPR)은 계속한다", "심폐소생술(CPR)을 하지 않고 자동심장충격기(AED)만 사용한다"],
+                answer: "다른 사람에게 가져오게 하고 심폐소생술(CPR)은 계속한다"
+            },
+            {
+                question: "9. 구조가 혼자 있을 때는 심폐소생술(CPR)을 하는 순서는?",
+                options: ["인공호흡 → 119 신고 → 압박", "바로 집으로 데려간다", "의식 및 호흡 확인 → 119 신고 → 가슴압박 시작", "옆 사람 부르기 → 물 마시게 하기"],
+                answer: "의식 및 호흡 확인 → 119 신고 → 가슴압박 시작"
             },
             {
                 question: "10. 가슴 압박을 할 때, 손 모양은 어떻게 해야 할까요?",
@@ -133,6 +134,7 @@
         const retryBtn = document.getElementById('retry-btn');
         const answerFeedback = document.getElementById('answer-feedback');
         const resultsContainer = document.getElementById('results-container');
+        const heartContainer = document.getElementById('heart-container'); // starContainer 대신 heartContainer 사용
 
         let currentQuestionIndex = 0;
         let score = 0;
@@ -205,6 +207,7 @@
                     score++;
                     selectedLabel.classList.add('correct-answer');
                     answerFeedback.innerHTML = '<span class="text-green-600">✅ 정답입니다!</span>';
+                    heartContainer.innerHTML += '❤️'; // 정답일 때 하트 추가
                 } else {
                     selectedLabel.classList.add('incorrect-answer');
                     answerFeedback.innerHTML = `<span class="text-red-600">❌ 오답입니다.</span>`;
@@ -243,6 +246,7 @@
         function showFinalResults() {
             quizContainer.innerHTML = ''; // 퀴즈 컨테이너 비우기
             answerFeedback.innerHTML = ''; // 피드백 메시지 비우기
+            heartContainer.innerHTML = ''; // 최종 결과 표시 시 하트 초기화 (starContainer 대신)
 
             const totalQuestions = quizData.length;
             const incorrectAnswers = totalQuestions - score;
@@ -251,7 +255,8 @@
             let resultMessage = `<span class="text-sky-700">총 ${totalQuestions} 문제 중:</span><br>`;
             resultMessage += `<span class="text-green-600">✅ 정답: ${score}개</span><br>`;
             resultMessage += `<span class="text-red-600">❌ 오답: ${incorrectAnswers}개</span><br>`;
-            resultMessage += `<span class="text-slate-700">점수: ${scorePercentage}%</span>`;
+            resultMessage += `<span class="text-slate-700">점수: ${scorePercentage}%</span><br><br>`;
+            resultMessage += `<span class="text-sky-700 text-3xl font-extrabold">모두 풀었습니다. 성공! 🎉</span>`;
             
             resultsContainer.innerHTML = resultMessage;
 
@@ -265,6 +270,7 @@
         function retryQuiz() {
             currentQuestionIndex = 0;
             score = 0;
+            heartContainer.innerHTML = ''; // 퀴즈 다시 풀기 시 하트 초기화 (starContainer 대신)
             loadQuestion();
         }
         
